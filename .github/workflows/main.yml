@@ -31,7 +31,7 @@ jobs:
         run: docker push ${{ secrets.DOCKER_USERNAME }}/email-writer-sb:latest
 
   deploy:
-    needs: build
+    needs: build_job
     runs-on: [aws-ec3]
     steps:
       - name: Pull Image from DockerHub
