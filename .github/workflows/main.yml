@@ -2,7 +2,8 @@ name: Build and Deploy to EC2
 
 on:
   push:
-    branches: [push-to-aws]
+    branches:
+      - main
 
 jobs:
   build_job:
