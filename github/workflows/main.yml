@@ -5,7 +5,7 @@ on:
     branches: [push-to-aws]
 
 jobs:
-  build:
+  build_job:
     runs-on: ubuntu-latest
 
     steps:
