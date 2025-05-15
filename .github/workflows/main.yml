@@ -24,6 +24,7 @@ jobs:
 
       - name: Log in to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/email-writer-sb:latest .
 
@@ -33,10 +34,27 @@ jobs:
   deploy:
     needs: build_job
     runs-on: [aws-ec3]
+
     steps:
+      - name: Install Docker if not present
+        run: |
+          if ! command -v docker &> /dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            sudo usermod -aG docker $USER
+          fi
+
       - name: Pull Image from DockerHub
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/email-writer-sb:latest
+
       - name: Delete old container
-        run: docker rm -f email-writer-sb-container
+        run: docker rm -f email-writer-sb-container || true
+
       - name: Run Docker Container
-        run: docker run -d -p 8080:8080 --name email-writer-sb-container ${{ secrets.DOCKER_USERNAME }}/email-writer-sb:latest
+        run: docker run -d -p 8080:8080 \
+          -e GEMINI_URL=${{ secrets.GEMINI_URL }} \
+          -e GEMINI_KEY=${{ secrets.GEMINI_KEY }} \
+          --name email-writer-sb-container \
+          ${{ secrets.DOCKER_USERNAME }}/email-writer-sb:latest
