@@ -1,4 +1,4 @@
-name: Build and Deploy to EC3 MICRO
+name: Build and Deploy to EC3 
 
 on:
   push:
