@@ -34,15 +34,15 @@ public class EmailGeneratorService {
                                 })
                 });
 
+        String fullUrl = GeminiApiUrl + "?key=" + GeminiApiKey;
 
-        String response = webClient.post().uri(GeminiApiUrl + "?key=" + GeminiApiKey)
-
+        String response = webClient.post().uri(fullUrl)
                 .header("Content-Type", "application/json")
                 .bodyValue(requestbody)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-        
+
         return extractContentResponse(response);
     }
 
