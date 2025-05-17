@@ -34,9 +34,7 @@ public class EmailGeneratorService {
                                 })
                 });
 
-        String fullUrl = GeminiApiUrl + "?key=" + GeminiApiKey;
-
-        String response = webClient.post().uri(fullUrl)
+        String response = webClient.post().uri(GeminiApiUrl + GeminiApiKey)
                 .header("Content-Type", "application/json")
                 .bodyValue(requestbody)
                 .retrieve()
