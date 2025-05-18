@@ -1,4 +1,4 @@
-name: Build and Deploy to EC3 instance
+name: Build and Deploy to EC3 
 
 on:
   push:
